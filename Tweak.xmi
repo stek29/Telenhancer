@@ -1,7 +1,7 @@
 #include "NeverExplicit.xm"
-//#include "ShowDebugSettings.xm"
+#include "ShowDebugSettings.xm"
 
 %ctor {
   %init(NeverExplicit);
-  //%init(ShowDebugSettings);
+  %init(ShowDebugSettings);
 }
