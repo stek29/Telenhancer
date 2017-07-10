@@ -1,0 +1,9 @@
+Package: rocks.stek29.telenhancer
+Name: Telenhancer
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Various features for Telegram
+Maintainer: Viktor Oreshkin (stek29) <cy@stek29.rocks>
+Author: Viktor Oreshkin (stek29) <cy@stek29.rocks>
+Section: Tweaks
