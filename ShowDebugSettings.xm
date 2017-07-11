@@ -1,3 +1,5 @@
+#import "SharedSettings.h"
+
 @interface TGCollectionMenuSection : NSObject
 @property (nonatomic, readonly, strong) NSArray *items;
 @end
@@ -68,3 +70,15 @@
 %end
 
 %end
+
+static BOOL shouldLoadShowDebugSettings(TelenhancerSettings* settings) {
+  [settings
+    addGroup:@"ShowDebugSettings"
+    withDefaultSetting: [[TelenhancerSetting alloc]
+      initWithLabel: @"Show Debug Settings"
+      description: nil
+      andPreferences: nil
+    ]];
+
+  return [settings settingForGroup:@"ShowDebugSettings"].enabled;
+}

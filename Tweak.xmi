@@ -1,7 +1,11 @@
+#include "SharedSettings.h"
 #include "NeverExplicit.xm"
 #include "ShowDebugSettings.xm"
 
+#define LoadIfShould(Group) if (shouldLoad##Group(settings)) %init(Group)
+
 %ctor {
-  %init(NeverExplicit);
-  %init(ShowDebugSettings);
+  TelenhancerSettings *settings = [TelenhancerSettings sharedInstance];
+  LoadIfShould(NeverExplicit)
+  LoadIfShould(ShowDebugSettings);
 }
