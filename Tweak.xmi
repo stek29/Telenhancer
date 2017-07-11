@@ -1,7 +1,14 @@
+#include "PrefMaster.h"
 #include "NeverExplicit.xm"
 #include "ShowDebugSettings.xm"
 
+#define CheckNLoad(Group)\
+  if ([prefs.prefrences objectForKey: @#Group] != nil) \
+    %init(Group);
+
 %ctor {
-  %init(NeverExplicit);
-  %init(ShowDebugSettings);
+  PrefMaster *prefs = [[PrefMaster alloc] initWithBundleId:[[NSBundle mainBundle] bundleIdentifier]];
+
+  CheckNLoad(NeverExplicit);
+  CheckNLoad(ShowDebugSettings);
 }
