@@ -57,7 +57,6 @@
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     sharedInstance = [[TelenhancerSettings alloc] init];
-    sharedInstance->allSettings = [[NSMutableDictionary alloc] init];
   });
   return sharedInstance;
 }
@@ -84,4 +83,35 @@
   }
 }
 
+#define TEDefaultsKey @"TelenhancerSettings"
+-(void) saveToUserDefaults {
+  NSMutableDictionary *saveMe = [allSettings mutableCopy];
+  for (id key in [saveMe allKeys]) {
+    TelenhancerSetting *setting = [saveMe objectForKey:key];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:setting];
+    [saveMe setObject:data forKey:key];
+  }
+  [[NSUserDefaults standardUserDefaults] setObject:saveMe forKey:TEDefaultsKey];
+}
+
+-(instancetype) init {
+  self = [super init];
+  if (self) {
+    id saved = [[NSUserDefaults standardUserDefaults] objectForKey:TEDefaultsKey];
+    if (saved) {
+      NSMutableDictionary *loaded = [saved mutableCopy];
+      for (id key in [loaded allKeys]) {
+        NSData *data = [loaded objectForKey:key];
+        TelenhancerSetting *setting = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        [loaded setObject:setting forKey:key];
+      }
+      allSettings = loaded;
+    } else {
+      allSettings = [NSMutableDictionary dictionary];
+    }
+  }
+  return self;
+}
+
+#undef TEDefaultsKey
 @end

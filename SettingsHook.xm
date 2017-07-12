@@ -28,20 +28,33 @@
 -(void)addSection:(TGCollectionMenuSection *)section;
 @end
 
-@protocol iHateLogos_TGCollectionMenuController
-@property (nonatomic, strong) TGCollectionMenuSectionList *menuSections;
+@interface iHateLogos_TGCollectionMenuController : UIViewController
+-(void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem;
+@property(nonatomic, strong) TGCollectionMenuSectionList *menuSections;
+@end
+
+@interface TGAlertView : UIAlertView
+-(id)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle okButtonTitle:(NSString *)okButtonTitle completionBlock:(void (^)(bool okButtonPressed))completionBlock;
 @end
 
 static TGAppDelegate *TGAppDelegateInstance = nil;
 
 %group SettingsHook
 
-%subclass TESettingsController : TGCollectionMenuController <MFMailComposeViewControllerDelegate, UINavigationControllerDelegate>
+%subclass TESettingsController : TGCollectionMenuController <UINavigationControllerDelegate>
 -(instancetype) init {
   self = %orig;
-  %log(@"TESettingsController init");  
   if (self) {
+    iHateLogos_TGCollectionMenuController* ihlself = (iHateLogos_TGCollectionMenuController*) self;
+    ihlself.title = @"Telenhancer Settings";
+
     TelenhancerSettings *settings = [TelenhancerSettings sharedInstance];
+
+    [ihlself setRightBarButtonItem: [[UIBarButtonItem alloc]
+      initWithTitle:@"Save"
+      style:UIBarButtonItemStylePlain
+      target:self
+      action:@selector(saveAction)]];
 
     for (NSString* group in [settings allGroups]) {
       TelenhancerSetting *setting = [settings settingForGroup:group];
@@ -61,12 +74,24 @@ static TGAppDelegate *TGAppDelegateInstance = nil;
       }
       TGCollectionMenuSection *section = [%c(TGCollectionMenuSection) alloc];
       section = [section initWithItems:items];
-      [((id<iHateLogos_TGCollectionMenuController>) self).menuSections addSection:section];
+      [ihlself.menuSections addSection:section];
     }
   }
 
   return self;
 }
+
+%new
+-(void) saveAction {
+  [[TelenhancerSettings sharedInstance] saveToUserDefaults];
+  TGAlertView *alert = [%c(TGAlertView) alloc];
+  [[alert
+    initWithTitle:@"Saved!"
+    message:@"Please restart the app"
+    cancelButtonTitle:@"OK"
+    okButtonTitle:nil completionBlock:nil] show];
+}
+
 %end
 
 %hook TGMainTabsController

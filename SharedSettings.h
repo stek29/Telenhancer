@@ -12,6 +12,7 @@
 }
 +(instancetype) sharedInstance;
 -(NSArray*) allGroups;
+-(void) saveToUserDefaults;
 -(void) addGroup:(NSString*)g withDefaultSetting:(TelenhancerSetting*)s;
 -(TelenhancerSetting*) settingForGroup:(NSString*)s;
 @end
