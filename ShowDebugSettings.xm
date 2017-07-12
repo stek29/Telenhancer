@@ -71,7 +71,9 @@
 
 %end
 
-static BOOL shouldLoadShowDebugSettings(TelenhancerSettings* settings) {
+%ctor {
+  TelenhancerSettings *settings = [TelenhancerSettings sharedInstance];
+
   [settings
     addGroup:@"ShowDebugSettings"
     withDefaultSetting: [[TelenhancerSetting alloc]
@@ -80,5 +82,6 @@ static BOOL shouldLoadShowDebugSettings(TelenhancerSettings* settings) {
       andPreferences: nil
     ]];
 
-  return [settings settingForGroup:@"ShowDebugSettings"].enabled;
+  if ([settings settingForGroup:@"ShowDebugSettings"].enabled)
+    %init(ShowDebugSettings);
 }

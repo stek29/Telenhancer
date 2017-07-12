@@ -2,19 +2,23 @@
 
 %group NeverExplicit
 
-#define fix(CLS)\
-  %hook CLS\
-    - (bool)hasExplicitContent {\
-      return false;\
-  }\
-  %end
+%hook TGUser
+- (bool)hasExplicitContent {
+  return false;
+}
+%end
 
-fix(TGUser);
-fix(TGConversation);
+%hook TGConversation
+- (bool)hasExplicitContent {
+  return false;
+}
+%end
 
 %end
 
-static BOOL shouldLoadNeverExplicit(TelenhancerSettings* settings) {
+%ctor {
+  TelenhancerSettings *settings = [TelenhancerSettings sharedInstance];
+
   [settings
     addGroup:@"NeverExplicit"
     withDefaultSetting: [[TelenhancerSetting alloc]
@@ -23,5 +27,6 @@ static BOOL shouldLoadNeverExplicit(TelenhancerSettings* settings) {
       andPreferences: nil
     ]];
 
-  return [settings settingForGroup:@"NeverExplicit"].enabled;
+  if ([settings settingForGroup:@"NeverExplicit"].enabled) 
+    %init(NeverExplicit);
 }
