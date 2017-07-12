@@ -20,12 +20,22 @@
 @property (nonatomic, strong) NSString *text;
 @end
 
+@interface TGButtonCollectionItem : TGCollectionItem
+-(instancetype)initWithTitle:(NSString *)title action:(SEL)action;
+@end
+
 @interface TGCollectionMenuSection : NSObject
 -(instancetype)initWithItems:(NSArray *)items;
+-(void)addItem:(TGCollectionItem *)item;
 @end
 
 @interface TGCollectionMenuSectionList : NSObject
 -(void)addSection:(TGCollectionMenuSection *)section;
+@end
+
+@interface TGAccountSettingsController : UIViewController
+@property (nonatomic, strong) TGCollectionMenuSectionList *menuSections;
+@property (nonatomic, strong) UICollectionView *collectionView;
 @end
 
 @interface iHateLogos_TGCollectionMenuController : UIViewController
@@ -94,19 +104,27 @@ static TGAppDelegate *TGAppDelegateInstance = nil;
 
 %end
 
-%hook TGMainTabsController
--(void)tabBarSelectedItem:(int)idx{
-  %orig;
-  // Tapped two or more times on settings and then on contacts
-  if (idx == 0 && MSHookIvar<int>(self, "_tapsInSuccession") != 0) {
+%hook TGAccountSettingsController
+-(instancetype) initWithUid:(int32_t)uid {
+  self = %orig;
+  if (self) {
+    TGButtonCollectionItem *btn = [%c(TGButtonCollectionItem) alloc];
+    [btn initWithTitle:@"Telenhancer Settings" action:@selector(TESettingsPressed)];
+    [MSHookIvar<TGCollectionMenuSection*>(self, "_settingsSection") addItem:btn];
+    [self.collectionView reloadData];
+  }
+  return self;
+}
+
+%new
+-(void) TESettingsPressed {
     if (TGAppDelegateInstance == nil) {
       TGAppDelegateInstance = [[UIApplication sharedApplication] delegate];
     }
     [TGAppDelegateInstance.rootController pushContentController:[[%c(TESettingsController) alloc] init]];
-    MSHookIvar<int>(self, "_tapsInSuccession") = 0;
-  }
 }
 %end
+
 %end
 
 %ctor {
