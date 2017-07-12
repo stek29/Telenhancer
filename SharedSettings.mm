@@ -57,21 +57,26 @@
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     sharedInstance = [[TelenhancerSettings alloc] init];
+    sharedInstance->allSettings = [[NSMutableDictionary alloc] init];
   });
   return sharedInstance;
 }
 
+-(NSArray*) allGroups {
+  return [allSettings allKeys];
+}
+
 -(void) addGroup:(NSString*)groupName withDefaultSetting:(TelenhancerSetting*)setting {
-  id current = [_prefs objectForKey:groupName];
+  id current = [allSettings objectForKey:groupName];
   if ([current isKindOfClass:[TelenhancerSetting class]]) {
     [current applyDefault:setting];
   } else {
-    [_prefs setObject:setting forKey:groupName];
+    [allSettings setObject:setting forKey:groupName];
   }
 }
 
 -(TelenhancerSetting*) settingForGroup:(NSString*)groupName {
-  id ret = [_prefs objectForKey:groupName];
+  id ret = [allSettings objectForKey:groupName];
   if (![ret isKindOfClass:[TelenhancerSetting class]]) {
     return nil;
   } else {

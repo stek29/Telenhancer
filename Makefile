@@ -2,8 +2,9 @@ PACKAGE_VERSION = $(THEOS_PACKAGE_BASE_VERSION)
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = Telenhancer
-Telenhancer_FILES = Tweak.xm\
+Telenhancer_FILES = \
 										SharedSettings.mm\
+										SettingsHook.xm\
 										NeverExplicit.xm\
 										ShowDebugSettings.xm
 

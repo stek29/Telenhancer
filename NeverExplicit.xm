@@ -27,6 +27,7 @@
       andPreferences: nil
     ]];
 
+  //%log("Added group NeverExplicit");
   if ([settings settingForGroup:@"NeverExplicit"].enabled) 
     %init(NeverExplicit);
 }
