@@ -50,10 +50,11 @@
 
   [settings
     addGroup:@"ShowDebugSettings"
-    withDefaultSetting: [[TelenhancerSetting alloc]
-      initWithLabel: @"Show Debug Settings"
+    withDefaultSetting: [TelenhancerSetting
+      createWithLabel: @"Show Debug Settings"
       description: nil
-      andPreferences: nil
+      preferences: nil
+      isEnabled: NO
     ]];
 
   if ([settings settingForGroup:@"ShowDebugSettings"].enabled)

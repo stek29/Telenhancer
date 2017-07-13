@@ -37,7 +37,7 @@ static TGAppDelegate *TGAppDelegateInstance = nil;
         [items addObject:descriptionItem];
       }
       if (setting.preferences) {
-        %log(@"TODO: setting prefrences in SettingsHook");
+        %log(@"TODO: setting preferences in SettingsHook");
       }
       TGCollectionMenuSection *section = [%c(TGCollectionMenuSection) alloc];
       section = [section initWithItems:items];

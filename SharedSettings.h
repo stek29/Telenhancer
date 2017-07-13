@@ -3,7 +3,7 @@
 @property(strong, nonatomic) NSString *sDescription;
 @property(strong, nonatomic) NSMutableDictionary *preferences;
 @property(nonatomic) BOOL enabled;
--(instancetype) initWithLabel:(NSString*)l description:(NSString*)d andPreferences:(NSMutableDictionary*)p;
++(instancetype) createWithLabel:(NSString*)l description:(NSString*)d preferences:(NSMutableDictionary*)p isEnabled:(BOOL)e;
 -(void)applyDefault:(TelenhancerSetting*)d;
 @end
 

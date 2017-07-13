@@ -21,13 +21,13 @@
 
   [settings
     addGroup:@"NeverExplicit"
-    withDefaultSetting: [[TelenhancerSetting alloc]
-      initWithLabel: @"NeverExplicit"
+    withDefaultSetting: [TelenhancerSetting
+      createWithLabel: @"NeverExplicit"
       description: @"Unrestrict all bots and channels"
-      andPreferences: nil
+      preferences: nil
+      isEnabled: NO
     ]];
 
-  //%log("Added group NeverExplicit");
   if ([settings settingForGroup:@"NeverExplicit"].enabled) 
     %init(NeverExplicit);
 }

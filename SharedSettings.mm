@@ -2,17 +2,17 @@
 
 @implementation TelenhancerSetting
 
--(instancetype) initWithLabel:(NSString*)lbl description:(NSString*)desc andPreferences:(NSMutableDictionary*)prefs {
-  self = [self init];
++(instancetype) createWithLabel:(NSString*)pLabel description:(NSString*)pDescription preferences:(NSMutableDictionary*)pPreferences isEnabled:(BOOL)pEnabled { 
+  TelenhancerSetting* ret = [[self alloc] init];
 
-  if (self) {
-    self.label = lbl;
-    self.sDescription = desc;
-    self.preferences = prefs;
-    self.enabled = NO;
+  if (ret) {
+    ret.label = pLabel;
+    ret.sDescription = pDescription;
+    ret.preferences = pPreferences;
+    ret.enabled = pEnabled;
   }
 
-  return self;
+  return ret;
 }
 
 -(id)initWithCoder:(NSCoder *)decoder {
@@ -38,13 +38,15 @@
 -(void)applyDefault:(TelenhancerSetting*)def {
   self.label = def.label;
   self.sDescription = def.sDescription;
-  NSMutableDictionary* defPrefs = [def.preferences copy];
+
+  NSMutableDictionary* defPrefs = [def.preferences mutableCopy];
   for (id key in defPrefs) {
     id old = [self.preferences objectForKey:key];
     if (old && [old isMemberOfClass:[[defPrefs objectForKey:key] class]]) {
       [defPrefs setObject:old forKey:key];
     }
   }
+
   self.preferences = defPrefs;
 }
 
