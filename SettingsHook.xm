@@ -1,51 +1,9 @@
-#include "SharedSettings.h"
-
-@interface TGRootController
--(void)pushContentController:(UIViewController *)contentController;
-@end
-
-@interface TGAppDelegate : NSObject
-@property (nonatomic, strong) TGRootController *rootController;
-@end
-
-@interface TGCollectionItem : NSObject
-@end
-
-@interface TGSwitchCollectionItem : TGCollectionItem
-@property (nonatomic, copy) void (^toggled)(bool value, TGSwitchCollectionItem *item);
--(instancetype)initWithTitle:(NSString *)title isOn:(bool)isOn;
-@end
-
-@interface TGCollectionStaticMultilineTextItem : TGCollectionItem
-@property (nonatomic, strong) NSString *text;
-@end
-
-@interface TGButtonCollectionItem : TGCollectionItem
--(instancetype)initWithTitle:(NSString *)title action:(SEL)action;
-@end
-
-@interface TGCollectionMenuSection : NSObject
--(instancetype)initWithItems:(NSArray *)items;
--(void)addItem:(TGCollectionItem *)item;
-@end
-
-@interface TGCollectionMenuSectionList : NSObject
--(void)addSection:(TGCollectionMenuSection *)section;
-@end
-
-@interface TGAccountSettingsController : UIViewController
-@property (nonatomic, strong) TGCollectionMenuSectionList *menuSections;
-@property (nonatomic, strong) UICollectionView *collectionView;
-@end
-
-@interface iHateLogos_TGCollectionMenuController : UIViewController
--(void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem;
-@property(nonatomic, strong) TGCollectionMenuSectionList *menuSections;
-@end
-
-@interface TGAlertView : UIAlertView
--(id)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle okButtonTitle:(NSString *)okButtonTitle completionBlock:(void (^)(bool okButtonPressed))completionBlock;
-@end
+#import "TGHeaders/TGAppDelegate.h"
+#import "TGHeaders/TGCollectionItems.h"
+#import "TGHeaders/TGCollectionMenus.h"
+#import "TGHeaders/TGAlertView.h"
+#import "TGHeaders/TGAccountSettingsController.h"
+#import "SharedSettings.h"
 
 static TGAppDelegate *TGAppDelegateInstance = nil;
 
@@ -55,17 +13,16 @@ static TGAppDelegate *TGAppDelegateInstance = nil;
 -(instancetype) init {
   self = %orig;
   if (self) {
-    iHateLogos_TGCollectionMenuController* ihlself = (iHateLogos_TGCollectionMenuController*) self;
-    ihlself.title = @"Telenhancer Settings";
+    TGCollectionMenuController* castSelf = (TGCollectionMenuController*) self;
+    castSelf.title = @"Telenhancer Settings";
 
-    TelenhancerSettings *settings = [TelenhancerSettings sharedInstance];
-
-    [ihlself setRightBarButtonItem: [[UIBarButtonItem alloc]
+    [castSelf setRightBarButtonItem: [[UIBarButtonItem alloc]
       initWithTitle:@"Save"
       style:UIBarButtonItemStylePlain
       target:self
       action:@selector(saveAction)]];
 
+    TelenhancerSettings *settings = [TelenhancerSettings sharedInstance];
     for (NSString* group in [settings allGroups]) {
       TelenhancerSetting *setting = [settings settingForGroup:group];
       NSMutableArray *items = [NSMutableArray array];
@@ -84,7 +41,7 @@ static TGAppDelegate *TGAppDelegateInstance = nil;
       }
       TGCollectionMenuSection *section = [%c(TGCollectionMenuSection) alloc];
       section = [section initWithItems:items];
-      [ihlself.menuSections addSection:section];
+      [castSelf.menuSections addSection:section];
     }
   }
 
@@ -94,6 +51,7 @@ static TGAppDelegate *TGAppDelegateInstance = nil;
 %new
 -(void) saveAction {
   [[TelenhancerSettings sharedInstance] saveToUserDefaults];
+
   TGAlertView *alert = [%c(TGAlertView) alloc];
   [[alert
     initWithTitle:@"Saved!"
