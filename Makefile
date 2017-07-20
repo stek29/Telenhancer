@@ -6,7 +6,8 @@ Telenhancer_FILES = \
 										SharedSettings.mm\
 										SettingsHook.xm\
 										NeverExplicit.xm\
-										InternalSettings.xm
+										InternalSettings.xm\
+										TGAppDelegateInstance.mm\
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

@@ -5,8 +5,6 @@
 #import "TGHeaders/TGAccountSettingsController.h"
 #import "SharedSettings.h"
 
-static TGAppDelegate *TGAppDelegateInstance = nil;
-
 %group SettingsHook
 
 %subclass TESettingsController : TGCollectionMenuController <UINavigationControllerDelegate>
@@ -76,10 +74,7 @@ static TGAppDelegate *TGAppDelegateInstance = nil;
 
 %new
 -(void) TESettingsPressed {
-    if (TGAppDelegateInstance == nil) {
-      TGAppDelegateInstance = [[UIApplication sharedApplication] delegate];
-    }
-    [TGAppDelegateInstance.rootController pushContentController:[[%c(TESettingsController) alloc] init]];
+    [TGAppDelegateInstance().rootController pushContentController:[[%c(TESettingsController) alloc] init]];
 }
 %end
 

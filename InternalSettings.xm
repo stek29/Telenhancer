@@ -3,6 +3,7 @@
 #import "TGHeaders/TGCollectionMenus.h"
 #import "TGHeaders/TGAccountSettingsController.h"
 #import "TGHeaders/TGAlertView.h"
+#import "TGHeaders/TGAppDelegate.h"
 
 %group ShowDebugSettings
 %hook TGAccountSettingsController
@@ -59,7 +60,7 @@
       initWithTitle:@"Switch DC"
       message:[NSString
         stringWithFormat:@"Switch to %@ DC?",
-          @"another"]
+          TGAppDelegateInstance().useDifferentBackend ? @"main" : @"test"]
       cancelButtonTitle:@"No"
       okButtonTitle:@"Yes"
       completionBlock:^void (bool ok) {
