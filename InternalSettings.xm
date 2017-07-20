@@ -2,9 +2,9 @@
 #import "TGHeaders/TGCollectionItems.h"
 #import "TGHeaders/TGCollectionMenus.h"
 #import "TGHeaders/TGAccountSettingsController.h"
+#import "TGHeaders/TGAlertView.h"
 
 %group ShowDebugSettings
-
 %hook TGAccountSettingsController
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
   %orig;
@@ -42,21 +42,55 @@
   }
 }
 %end
+%end
 
+%group SwitchDC
+
+@interface TGTelegramNetworking : NSObject
++(instancetype) instance;
+-(void) switchBackends;
+@end
+
+%hook TGLoginPhoneController
+-(void)updatePhoneTextForCountryFieldText:(NSString *) countryCodeText {
+  if ([countryCodeText isEqualToString:@"+0"]) {
+    TGAlertView *alert = [%c(TGAlertView) alloc];
+    [alert
+      initWithTitle:@"Switch DC"
+      message:[NSString
+        stringWithFormat:@"Switch to %@ DC?",
+          @"another"]
+      cancelButtonTitle:@"No"
+      okButtonTitle:@"Yes"
+      completionBlock:^void (bool ok) {
+        if (ok) {
+          // Marked as "lagacy" in sources!
+          [(TGTelegramNetworking*)[%c(TGTelegramNetworking) instance] switchBackends];
+        }
+      }];
+    [alert show];
+  } else {
+    %orig;
+  }
+}
+%end
 %end
 
 %ctor {
   TelenhancerSettings *settings = [TelenhancerSettings sharedInstance];
 
   [settings
-    addGroup:@"ShowDebugSettings"
+    addGroup:@"InternalSettings"
     withDefaultSetting: [TelenhancerSetting
-      createWithLabel: @"Show Debug Settings"
-      description: nil
+      createWithLabel: @"Internal Debug Settings"
+      description: @"- \"Show Debug Settings\" under \"Log Out\" button\n"
+                    "- Enter \"+0\" country code to switch backend"
       preferences: nil
       isEnabled: NO
     ]];
 
-  if ([settings settingForGroup:@"ShowDebugSettings"].enabled)
+  if ([settings settingForGroup:@"ShowDebugSettings"].enabled) {
     %init(ShowDebugSettings);
+    %init(SwitchDC);
+  }
 }
