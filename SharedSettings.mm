@@ -64,7 +64,7 @@
 }
 
 -(NSArray*) allGroups {
-  return [allSettings allKeys];
+  return [allGroups allObjects];
 }
 
 -(void) addGroup:(NSString*)groupName withDefaultSetting:(TelenhancerSetting*)setting {
@@ -74,6 +74,7 @@
   } else {
     [allSettings setObject:setting forKey:groupName];
   }
+  [allGroups addObject:groupName];
 }
 
 -(TelenhancerSetting*) settingForGroup:(NSString*)groupName {
@@ -87,9 +88,10 @@
 
 #define TEDefaultsKey @"TelenhancerSettings"
 -(void) saveToUserDefaults {
-  NSMutableDictionary *saveMe = [allSettings mutableCopy];
-  for (id key in [saveMe allKeys]) {
-    TelenhancerSetting *setting = [saveMe objectForKey:key];
+  NSMutableDictionary *saveMe = [[NSMutableDictionary alloc] init];
+  // Not [allSettings allKeys] to filter obsolete groups
+  for (id key in allGroups) {
+    TelenhancerSetting *setting = [allSettings objectForKey:key];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:setting];
     [saveMe setObject:data forKey:key];
   }
@@ -111,6 +113,7 @@
     } else {
       allSettings = [NSMutableDictionary dictionary];
     }
+    allGroups = [[NSMutableSet alloc] init];
   }
   return self;
 }

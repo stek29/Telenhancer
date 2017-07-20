@@ -9,6 +9,7 @@
 
 @interface TelenhancerSettings : NSObject {
   NSMutableDictionary *allSettings;
+  NSMutableSet *allGroups;
 }
 +(instancetype) sharedInstance;
 -(NSArray*) allGroups;
