@@ -16,3 +16,8 @@
 @interface TGCollectionStaticMultilineTextItem : TGCollectionItem
 @property (nonatomic, strong) NSString *text;
 @end
+
+@interface TGCommentCollectionItem : TGCollectionItem
+-(instancetype)initWithText:(NSString *)text;
+-(instancetype)initWithFormattedText:(NSString *)text;
+@end

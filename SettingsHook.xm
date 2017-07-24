@@ -30,8 +30,7 @@
       };
       [items addObject:enabledItem];
       if (setting.sDescription) {
-        TGCollectionStaticMultilineTextItem *descriptionItem = [[%c(TGCollectionStaticMultilineTextItem) alloc] init];
-        descriptionItem.text = setting.sDescription;
+        TGCommentCollectionItem *descriptionItem = [[%c(TGCommentCollectionItem) alloc] initWithFormattedText:setting.sDescription];
         [items addObject:descriptionItem];
       }
       if (setting.preferences) {
