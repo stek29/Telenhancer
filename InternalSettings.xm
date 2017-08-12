@@ -87,7 +87,7 @@
       description: @"- \"Show Debug Settings\" under \"Log Out\" button\n"
                     "- Enter \"+0\" country code to switch backend"
       preferences: nil
-      isEnabled: NO
+      isEnabled: YES
     ]];
 
   if ([settings settingForGroup:@"InternalSettings"].enabled) {
