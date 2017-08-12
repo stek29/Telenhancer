@@ -6,7 +6,7 @@
 
 @interface TGAppDelegate : NSObject
 @property (nonatomic, strong) TGRootController *rootController;
-@property (nonatomic) bool useDifferentBackend;
+@property (nonatomic) bool useDifferentBackend; // Reversed (true=using main)
 @end
 
 TGAppDelegate* TGAppDelegateInstance(void);

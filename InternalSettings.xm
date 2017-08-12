@@ -60,7 +60,7 @@
       initWithTitle:@"Switch DC"
       message:[NSString
         stringWithFormat:@"Switch to %@ DC?",
-          TGAppDelegateInstance().useDifferentBackend ? @"main" : @"test"]
+          TGAppDelegateInstance().useDifferentBackend ? @"test" : @"main"]
       cancelButtonTitle:@"No"
       okButtonTitle:@"Yes"
       completionBlock:^void (bool ok) {
