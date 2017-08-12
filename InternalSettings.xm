@@ -90,7 +90,7 @@
       isEnabled: NO
     ]];
 
-  if ([settings settingForGroup:@"ShowDebugSettings"].enabled) {
+  if ([settings settingForGroup:@"InternalSettings"].enabled) {
     %init(ShowDebugSettings);
     %init(SwitchDC);
   }
