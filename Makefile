@@ -8,6 +8,7 @@ Telenhancer_FILES = \
 										NeverExplicit.xm\
 										InternalSettings.xm\
 										TGAppDelegateInstance.mm\
+										BetterShare.xm\
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
