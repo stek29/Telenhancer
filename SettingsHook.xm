@@ -68,7 +68,7 @@
   self = %orig;
   if (self) {
     TGButtonCollectionItem *btn = [%c(TGButtonCollectionItem) alloc];
-    [btn initWithTitle:@"Telenhancer Settings" action:@selector(TESettingsPressed)];
+    btn = [btn initWithTitle:@"Telenhancer Settings" action:@selector(TESettingsPressed)];
     [MSHookIvar<TGCollectionMenuSection*>(self, "_settingsSection") addItem:btn];
     [self.collectionView reloadData];
   }

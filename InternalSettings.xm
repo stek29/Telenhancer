@@ -56,7 +56,7 @@
 -(void)updatePhoneTextForCountryFieldText:(NSString *) countryCodeText {
   if ([countryCodeText isEqualToString:@"+0"]) {
     TGAlertView *alert = [%c(TGAlertView) alloc];
-    [alert
+    alert = [alert
       initWithTitle:@"Switch DC"
       message:[NSString
         stringWithFormat:@"Switch to %@ DC?",

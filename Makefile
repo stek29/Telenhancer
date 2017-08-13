@@ -1,5 +1,7 @@
 PACKAGE_VERSION = $(THEOS_PACKAGE_BASE_VERSION)
+
 include $(THEOS)/makefiles/common.mk
+
 
 TWEAK_NAME = Telenhancer
 Telenhancer_FILES = \
@@ -9,6 +11,8 @@ Telenhancer_FILES = \
 										InternalSettings.xm\
 										TGAppDelegateInstance.mm\
 										BetterShare.xm\
+
+Telenhancer_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
