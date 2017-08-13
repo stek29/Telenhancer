@@ -53,8 +53,12 @@
   [[alert
     initWithTitle:@"Saved!"
     message:@"Please restart the app"
-    cancelButtonTitle:@"OK"
-    okButtonTitle:nil completionBlock:nil] show];
+    cancelButtonTitle:@"Later"
+    okButtonTitle:@"Now" completionBlock:^(bool ok) {
+      if (ok) {
+        exit(0);
+      }
+    }] show];
 }
 
 %end
