@@ -21,3 +21,7 @@
 -(instancetype)initWithText:(NSString *)text;
 -(instancetype)initWithFormattedText:(NSString *)text;
 @end
+
+@interface TGSeparatorCollectionItem : TGCollectionItem
+@end
+

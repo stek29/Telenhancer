@@ -20,6 +20,11 @@
       target:self
       action:@selector(saveAction)]];
 
+    TGSeparatorCollectionItem *spacerItem = [[%c(TGSeparatorCollectionItem) alloc] init];
+    TGCollectionMenuSection *spacerSection = [%c(TGCollectionMenuSection) alloc];
+    spacerSection = [spacerSection initWithItems:@[spacerItem]];
+    [castSelf.menuSections addSection:spacerSection];
+
     TelenhancerSettings *settings = [TelenhancerSettings sharedInstance];
     for (NSString* group in [settings allGroups]) {
       TelenhancerSetting *setting = [settings settingForGroup:group];
